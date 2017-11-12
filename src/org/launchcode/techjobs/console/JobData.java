@@ -22,6 +22,31 @@ public class JobData {
     private static ArrayList<HashMap<String, String>> allJobs;
 
     /**
+     * Returns results of search the jobs data, using inclusion of the search term.
+     *
+     * For example, searching for "enterprise" will include results
+     * with "Enterprise Holdings, Inc".
+     *
+     * @param value Value of teh field to search for
+     * @return List of all jobs matching the criteria
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> rows : allJobs) {
+            for (String row : rows.values()) {
+                if (row.toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(rows);
+                    break;
+                }
+            }
+        }
+
+        return jobs;
+    }
+    /**
      * Fetch list of all values from loaded data,
      * without duplicates, for a given column.
      *
@@ -58,7 +83,7 @@ public class JobData {
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
      *
-     * For example, searching for employer "Enterprise" will include results
+     * For example, searching for employer "enterprise" will include results
      * with "Enterprise Holdings, Inc".
      *
      * @param column   Column that should be searched.
@@ -76,7 +101,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
